@@ -1,8 +1,8 @@
 package com.aakin.bookservice.dto
 
 data class BookIdDto @JvmOverloads constructor(
-        val bookId: String? = "",
-        val isbn: String
+    val bookId: String? = "",
+    val isbn: String? = ""
 ){
 
     companion object {

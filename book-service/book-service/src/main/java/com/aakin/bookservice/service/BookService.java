@@ -11,29 +11,28 @@ import java.util.stream.Collectors;
 
 @Service
 public class BookService {
-    private final BookRepository bookRepository;
+    private final BookRepository repository;
 
-    public BookService(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
+    public BookService(BookRepository repository) {
+        this.repository = repository;
     }
 
     public List<BookDto> getAllBooks() {
-        return bookRepository.findAll()
+        return repository.findAll()
                 .stream()
                 .map(BookDto::convert)
                 .collect(Collectors.toList());
     }
 
-    public BookIdDto findByIsbn(String isbn){
-        return bookRepository.findBookByIsbn(isbn)
+    public BookIdDto findByIsbn(String isbn) {
+        return repository.getBookByIsbn(isbn)
                 .map(book -> new BookIdDto(book.getId(), book.getIsbn()))
-                .orElseThrow(() -> new BookNotFoundException("Aradığınız isbn'de kitap bulunamamaktadir: " + isbn));
+                .orElseThrow(() -> new BookNotFoundException("Book could not found by isbn: " + isbn));
     }
 
-    public BookDto findBookDetailsById(String id){
-        return bookRepository
-                .findById(id)
-                .map(BookDto::convert).orElseThrow(() -> new BookNotFoundException("Aradiğiniz id'ye ait kitap bulunamamaktadir: " + id ));
+    public BookDto findBookDetailsById(String id) {
+        return repository.findById(id)
+                .map(BookDto::convert)
+                .orElseThrow(() -> new BookNotFoundException("Book could not found by id:" + id));
     }
-
 }
